@@ -1,4 +1,3 @@
-from lib2to3.pytree import Base
 from typing import Any, Dict
 from .model_serializer import ModelSerializer
 from models import Blog, BaseModel

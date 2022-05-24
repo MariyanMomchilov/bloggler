@@ -1,4 +1,3 @@
-from lib2to3.pgen2.token import OP
 from pydantic import BaseModel
 from enum import Enum
 from typing import Optional, List

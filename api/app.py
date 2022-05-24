@@ -1,3 +1,4 @@
+from http import HTTPStatus
 from fastapi import FastAPI, HTTPException
 from typing import List
 
@@ -26,6 +27,22 @@ async def get_blog(item_id: int):
 async def create_blog(blog: Blog):
     try:
         serializer = BlogSerializer()
-        serializer.create_instance(blog)
+        return serializer.create_instance(blog)
+    except BaseException as e:
+        raise e or HTTPException(status_code=500)
+
+@app.put('/blogs/{item_id}')
+async def update_blog(blog: Blog, item_id: int):
+    try:
+        serializer = BlogSerializer()
+        serializer.update_instance(item_id, blog)
+    except:
+        raise HTTPException(status_code=500)
+
+@app.delete('/blogs/{item_id}')
+async def delete_blog(item_id: int):
+    try:
+        serializer = BlogSerializer()
+        serializer.delete_instance(item_id)
     except:
         raise HTTPException(status_code=500)

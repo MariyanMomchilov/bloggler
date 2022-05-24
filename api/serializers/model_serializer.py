@@ -24,7 +24,15 @@ class ModelSerializer(ABC):
     
     def create_instance(self, model: BaseModel):
         model_data = self.from_representation(model)
-        instance_data = self.controller.insert_one(model_data)
+        pk = self.controller.insert_one(model_data)
+        return self.get_instance(pk)
+    
+    def update_instance(self, id: int, model: BaseModel):
+        model_data = self.from_representation(model)
+        self.controller.update_one(id, model_data)
+    
+    def delete_instance(self, id: int):
+        self.controller.delete_one(id)
 
     def get_instances(self):
         return [self.to_representation(model_data) for model_data in self.controller.get_many()]

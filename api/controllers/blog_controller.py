@@ -1,6 +1,6 @@
 from .controller import Controller
 from query.tables import blog
-from sqlalchemy.sql import select, update, insert
+from sqlalchemy.sql import select, update, insert, delete
 
 
 class BlogController(Controller):
@@ -19,10 +19,15 @@ class BlogController(Controller):
     
     def update_one(self, id: int, values: dict):
         with self.engine.begin() as conn:
-            return conn.execute(update(blog).where(blog.c.id == id).values(**values)).first()
+            return conn.execute(update(blog).where(blog.c.id == id).values(**values))
     
     def insert_one(self, values: dict):
         with self.engine.begin() as conn:
-            return conn.execute(insert(blog), [{**values}])
+            pk = conn.execute(insert(blog), [values]).inserted_primary_key['id']
+            return pk
+    
+    def delete_one(self, id: int):
+        with self.engine.begin() as conn:
+            return conn.execute(delete(blog).where(blog.c.id == id))
 
     
